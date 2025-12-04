@@ -29,6 +29,17 @@ declare module "@tanstack/react-router" {
 
 function App() {
   const auth = useAuth();
+
+  if (auth.isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-lg font-semibold text-gray-600">
+          Loading Mercuria...
+        </div>
+      </div>
+    );
+  }
+
   return <RouterProvider router={router} context={{ auth }} />;
 }
 

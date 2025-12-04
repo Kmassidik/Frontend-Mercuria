@@ -20,7 +20,8 @@ import {
 
 export const Route = createFileRoute("/dashboard")({
   beforeLoad: ({ context }) => {
-    if (!context.auth.isAuthenticated && !context.auth.isLoading) {
+    // You can remove !context.auth.isLoading now
+    if (!context.auth.isAuthenticated) {
       throw redirect({ to: "/login" });
     }
   },
