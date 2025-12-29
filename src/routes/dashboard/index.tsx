@@ -2,13 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useAuth } from "@/context/AuthContext";
 import { useWallets } from "@/hooks";
 import { formatCurrency } from "@/utils/format";
-import {
-  Wallet,
-  ArrowUpRight,
-  ArrowDownRight,
-  Plus,
-  Loader2,
-} from "lucide-react";
+import { Wallet, ArrowUpRight, Plus, Loader2, TrendingUp } from "lucide-react";
 
 export const Route = createFileRoute("/dashboard/")({
   component: DashboardPage,
@@ -25,132 +19,155 @@ function DashboardPage() {
   }, 0);
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">
-          Welcome back, {user?.first_name || "User"}
-        </h1>
-        <p className="text-gray-600">
-          Here's what's happening with your wallets.
-        </p>
+    <div className="space-y-8 font-sans text-black">
+      {/* HEADER SECTION */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <h1 className="text-4xl font-black uppercase tracking-tighter text-black">
+            Welcome, {user?.first_name || "Ruler"}
+          </h1>
+          <p className="font-bold text-gray-500 mt-1">
+            Here is your empire's financial status.
+          </p>
+        </div>
+        <Link
+          to="/dashboard/wallets/new"
+          className="flex items-center gap-2 bg-[#FFD93D] text-black border-2 border-black px-6 py-3 font-black uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] active:translate-y-0 active:shadow-none"
+        >
+          <Plus className="w-5 h-5 stroke-[3px]" />
+          Create Wallet
+        </Link>
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="card">
-          <div className="flex items-center justify-between">
+      {/* STATS GRID */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* TOTAL BALANCE CARD */}
+        <div className="bg-[#A388EE] border-4 border-black p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+          <div className="flex items-start justify-between">
             <div>
-              <p className="text-sm text-gray-500">Total Balance (USD)</p>
+              <p className="text-sm font-black text-white uppercase tracking-widest mb-1">
+                Total Balance
+              </p>
               {isLoading ? (
-                <Loader2 className="w-5 h-5 animate-spin mt-2" />
+                <Loader2 className="w-8 h-8 animate-spin text-white mt-2" />
               ) : (
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-3xl font-black text-white truncate">
                   {formatCurrency(totalBalance)}
                 </p>
               )}
             </div>
-            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-              <Wallet className="w-5 h-5 text-blue-600" />
+            <div className="bg-white border-2 border-black p-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+              <Wallet className="w-6 h-6 text-black" />
             </div>
           </div>
         </div>
 
-        <div className="card">
-          <div className="flex items-center justify-between">
+        {/* ACTIVE WALLETS CARD */}
+        <div className="bg-[#FF6B6B] border-4 border-black p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+          <div className="flex items-start justify-between">
             <div>
-              <p className="text-sm text-gray-500">Active Wallets</p>
+              <p className="text-sm font-black text-white uppercase tracking-widest mb-1">
+                Active Vaults
+              </p>
               {isLoading ? (
-                <Loader2 className="w-5 h-5 animate-spin mt-2" />
+                <Loader2 className="w-8 h-8 animate-spin text-white mt-2" />
               ) : (
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-3xl font-black text-white">
                   {wallets.length}
                 </p>
               )}
             </div>
-            <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-              <ArrowUpRight className="w-5 h-5 text-green-600" />
+            <div className="bg-white border-2 border-black p-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+              <TrendingUp className="w-6 h-6 text-black" />
             </div>
           </div>
         </div>
 
-        <div className="card">
-          <div className="flex items-center justify-between">
+        {/* QUICK ACTION CARD (Styled as Info) */}
+        <div className="bg-white border-4 border-black p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] flex flex-col justify-between">
+          <div className="flex items-start justify-between">
             <div>
-              <p className="text-sm text-gray-500">Quick Actions</p>
-              <div className="flex gap-2 mt-2">
-                <Link
-                  to="/dashboard/wallets/new"
-                  className="btn-primary btn-sm"
-                >
-                  <Plus className="w-4 h-4" />
-                  New Wallet
-                </Link>
-              </div>
+              <p className="text-sm font-black text-gray-500 uppercase tracking-widest mb-1">
+                Status
+              </p>
+              <p className="text-xl font-bold text-black">
+                All Systems Operational
+              </p>
             </div>
-            <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-              <ArrowDownRight className="w-5 h-5 text-purple-600" />
+            <div className="bg-[#4ADE80] border-2 border-black p-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+              <ArrowUpRight className="w-6 h-6 text-black" />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Wallets */}
-      <div className="card">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-gray-900">Your Wallets</h2>
+      {/* WALLETS LIST SECTION */}
+      <div className="border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+        <div className="flex items-center justify-between mb-6 border-b-4 border-black pb-4">
+          <h2 className="text-2xl font-black uppercase tracking-tighter">
+            Your Vaults
+          </h2>
           <Link
             to="/dashboard/wallets"
-            className="text-sm text-blue-600 hover:text-blue-700"
+            className="text-sm font-bold underline decoration-2 underline-offset-4 hover:bg-black hover:text-white hover:decoration-transparent transition-all px-1"
           >
-            View all
+            VIEW ALL
           </Link>
         </div>
 
         {isLoading ? (
-          <div className="flex justify-center py-8">
-            <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
+          <div className="flex justify-center py-12">
+            <Loader2 className="w-10 h-10 animate-spin text-black" />
           </div>
         ) : wallets.length === 0 ? (
-          <div className="text-center py-8">
-            <Wallet className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-            <p className="text-gray-500 mb-4">No wallets yet</p>
-            <Link to="/dashboard/wallets/new" className="btn-primary">
-              Create your first wallet
+          <div className="text-center py-12 bg-gray-50 border-2 border-dashed border-gray-300">
+            <Wallet className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+            <p className="text-xl font-bold text-gray-400 uppercase mb-6">
+              No vaults found
+            </p>
+            <Link
+              to="/dashboard/wallets/new"
+              className="inline-flex items-center gap-2 bg-black text-white px-6 py-3 font-bold uppercase hover:bg-[#A388EE] hover:text-black border-2 border-transparent hover:border-black transition-all"
+            >
+              <Plus className="w-5 h-5" />
+              Initialize First Vault
             </Link>
           </div>
         ) : (
-          <div className="space-y-3">
+          <div className="grid grid-cols-1 gap-4">
             {wallets.slice(0, 5).map((wallet) => (
               <Link
                 key={wallet.id}
                 to="/dashboard/wallets/$walletId"
                 params={{ walletId: wallet.id }}
-                className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                className="group flex items-center justify-between p-4 border-2 border-black bg-white hover:bg-[#FFFDF8] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-1 transition-all duration-200"
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center border">
-                    <span className="text-sm font-medium">
-                      {wallet.currency}
-                    </span>
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-[#FFD93D] border-2 border-black flex items-center justify-center font-black text-lg">
+                    {wallet.currency}
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900">
+                    <p className="text-xl font-black text-black">
                       {formatCurrency(wallet.balance, wallet.currency)}
                     </p>
-                    <p className="text-sm text-gray-500">
-                      {wallet.currency} Wallet
+                    <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+                      {wallet.currency} Vault
                     </p>
                   </div>
                 </div>
-                <span
-                  className={`text-xs px-2 py-1 rounded-full ${
-                    wallet.status === "active"
-                      ? "bg-green-100 text-green-700"
-                      : "bg-gray-100 text-gray-700"
-                  }`}
-                >
-                  {wallet.status}
-                </span>
+
+                <div className="flex items-center gap-4">
+                  <span
+                    className={`text-xs font-black px-3 py-1 border-2 border-black uppercase ${
+                      wallet.status === "active"
+                        ? "bg-[#4ADE80] text-black"
+                        : "bg-gray-200 text-gray-500"
+                    }`}
+                  >
+                    {wallet.status}
+                  </span>
+                  <ArrowUpRight className="w-5 h-5 text-black opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
               </Link>
             ))}
           </div>

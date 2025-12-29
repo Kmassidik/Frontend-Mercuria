@@ -29,26 +29,20 @@ export function useMetricsSummary(
   });
 }
 
-export function useUserAnalytics(
-  userId: string,
-  startDate: string,
-  endDate: string
-) {
+// FIXED: Removed userId parameter - backend extracts user from JWT token
+export function useUserAnalytics(startDate: string, endDate: string) {
   return useQuery({
-    queryKey: ["user-analytics", userId, startDate, endDate],
-    queryFn: () => analyticsApi.getUserAnalytics(userId, startDate, endDate),
-    enabled: !!userId && !!startDate && !!endDate,
+    queryKey: ["user-analytics", startDate, endDate],
+    queryFn: () => analyticsApi.getUserAnalytics(startDate, endDate),
+    enabled: !!startDate && !!endDate,
   });
 }
 
-export function useUserSnapshots(
-  userId: string,
-  startDate: string,
-  endDate: string
-) {
+// FIXED: Removed userId parameter - backend extracts user from JWT token
+export function useUserSnapshots(startDate: string, endDate: string) {
   return useQuery({
-    queryKey: ["user-snapshots", userId, startDate, endDate],
-    queryFn: () => analyticsApi.getUserSnapshots(userId, startDate, endDate),
-    enabled: !!userId && !!startDate && !!endDate,
+    queryKey: ["user-snapshots", startDate, endDate],
+    queryFn: () => analyticsApi.getUserSnapshots(startDate, endDate),
+    enabled: !!startDate && !!endDate,
   });
 }

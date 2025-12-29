@@ -1,4 +1,4 @@
-import { analyticsClient } from "./client";
+import { analyticsClient } from "@/api/client";
 import type {
   DailyMetric,
   HourlyMetric,
@@ -33,20 +33,21 @@ export const analyticsApi = {
       })
       .then((r) => r.data.data),
 
-  getUserAnalytics: (userId: string, startDate: string, endDate: string) =>
+  // FIXED: Changed from /api/v1/analytics/users/${userId} to /api/v1/analytics/me
+  // User ID is extracted from JWT token on the backend
+  getUserAnalytics: (startDate: string, endDate: string) =>
     analyticsClient
-      .get<DataResponse<UserAnalytics>>(`/api/v1/analytics/users/${userId}`, {
+      .get<DataResponse<UserAnalytics>>("/api/v1/analytics/me", {
         params: { start_date: startDate, end_date: endDate },
       })
       .then((r) => r.data.data),
 
-  getUserSnapshots: (userId: string, startDate: string, endDate: string) =>
+  // FIXED: Changed from /api/v1/analytics/users/${userId}/snapshots to /api/v1/analytics/me/snapshots
+  // User ID is extracted from JWT token on the backend
+  getUserSnapshots: (startDate: string, endDate: string) =>
     analyticsClient
-      .get<DataResponse<UserSnapshot[]>>(
-        `/api/v1/analytics/users/${userId}/snapshots`,
-        {
-          params: { start_date: startDate, end_date: endDate },
-        }
-      )
+      .get<DataResponse<UserSnapshot[]>>("/api/v1/analytics/me/snapshots", {
+        params: { start_date: startDate, end_date: endDate },
+      })
       .then((r) => r.data.data),
 };

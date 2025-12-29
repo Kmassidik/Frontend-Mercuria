@@ -1,8 +1,13 @@
 let accessToken: string | null = null;
 
+const isSecure = window.location.protocol === "https:";
+
 function setCookie(name: string, value: string, days: number): void {
   const expires = new Date(Date.now() + days * 864e5).toUTCString();
-  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/; SameSite=Strict; Secure`;
+
+  const secureFlag = isSecure ? "; Secure" : "";
+
+  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/; SameSite=Strict${secureFlag}`;
 }
 
 function getCookie(name: string): string | null {
@@ -11,14 +16,19 @@ function getCookie(name: string): string | null {
 }
 
 function deleteCookie(name: string): void {
-  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; SameSite=Strict; Secure`;
+  const secureFlag = isSecure ? "; Secure" : "";
+
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; SameSite=Strict${secureFlag}`;
 }
 
 export const getAccessToken = (): string | null => accessToken;
+
 export const setAccessToken = (token: string): void => {
   accessToken = token;
 };
+
 export const getRefreshToken = (): string | null => getCookie("mercuria_rt");
+
 export const setRefreshToken = (token: string): void =>
   setCookie("mercuria_rt", token, 7);
 

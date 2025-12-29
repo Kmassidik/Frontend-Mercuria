@@ -17,6 +17,8 @@ import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as DashboardWalletsRouteImport } from './routes/dashboard/wallets'
 import { Route as DashboardTransactionsRouteImport } from './routes/dashboard/transactions'
 import { Route as DashboardSettingsRouteImport } from './routes/dashboard/settings'
+import { Route as DashboardWalletsIndexRouteImport } from './routes/dashboard/wallets/index'
+import { Route as DashboardTransactionsIndexRouteImport } from './routes/dashboard/transactions/index'
 import { Route as DashboardWalletsNewRouteImport } from './routes/dashboard/wallets/new'
 import { Route as DashboardWalletsWalletIdRouteImport } from './routes/dashboard/wallets/$walletId'
 import { Route as DashboardTransactionsNewRouteImport } from './routes/dashboard/transactions/new'
@@ -62,6 +64,17 @@ const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => DashboardRoute,
 } as any)
+const DashboardWalletsIndexRoute = DashboardWalletsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardWalletsRoute,
+} as any)
+const DashboardTransactionsIndexRoute =
+  DashboardTransactionsIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => DashboardTransactionsRoute,
+  } as any)
 const DashboardWalletsNewRoute = DashboardWalletsNewRouteImport.update({
   id: '/new',
   path: '/new',
@@ -99,19 +112,21 @@ export interface FileRoutesByFullPath {
   '/dashboard/transactions/new': typeof DashboardTransactionsNewRoute
   '/dashboard/wallets/$walletId': typeof DashboardWalletsWalletIdRoute
   '/dashboard/wallets/new': typeof DashboardWalletsNewRoute
+  '/dashboard/transactions/': typeof DashboardTransactionsIndexRoute
+  '/dashboard/wallets/': typeof DashboardWalletsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
-  '/dashboard/transactions': typeof DashboardTransactionsRouteWithChildren
-  '/dashboard/wallets': typeof DashboardWalletsRouteWithChildren
   '/dashboard': typeof DashboardIndexRoute
   '/dashboard/transactions/$transactionId': typeof DashboardTransactionsTransactionIdRoute
   '/dashboard/transactions/new': typeof DashboardTransactionsNewRoute
   '/dashboard/wallets/$walletId': typeof DashboardWalletsWalletIdRoute
   '/dashboard/wallets/new': typeof DashboardWalletsNewRoute
+  '/dashboard/transactions': typeof DashboardTransactionsIndexRoute
+  '/dashboard/wallets': typeof DashboardWalletsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -127,6 +142,8 @@ export interface FileRoutesById {
   '/dashboard/transactions/new': typeof DashboardTransactionsNewRoute
   '/dashboard/wallets/$walletId': typeof DashboardWalletsWalletIdRoute
   '/dashboard/wallets/new': typeof DashboardWalletsNewRoute
+  '/dashboard/transactions/': typeof DashboardTransactionsIndexRoute
+  '/dashboard/wallets/': typeof DashboardWalletsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -143,19 +160,21 @@ export interface FileRouteTypes {
     | '/dashboard/transactions/new'
     | '/dashboard/wallets/$walletId'
     | '/dashboard/wallets/new'
+    | '/dashboard/transactions/'
+    | '/dashboard/wallets/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/login'
     | '/register'
     | '/dashboard/settings'
-    | '/dashboard/transactions'
-    | '/dashboard/wallets'
     | '/dashboard'
     | '/dashboard/transactions/$transactionId'
     | '/dashboard/transactions/new'
     | '/dashboard/wallets/$walletId'
     | '/dashboard/wallets/new'
+    | '/dashboard/transactions'
+    | '/dashboard/wallets'
   id:
     | '__root__'
     | '/'
@@ -170,6 +189,8 @@ export interface FileRouteTypes {
     | '/dashboard/transactions/new'
     | '/dashboard/wallets/$walletId'
     | '/dashboard/wallets/new'
+    | '/dashboard/transactions/'
+    | '/dashboard/wallets/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -237,6 +258,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardSettingsRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/dashboard/wallets/': {
+      id: '/dashboard/wallets/'
+      path: '/'
+      fullPath: '/dashboard/wallets/'
+      preLoaderRoute: typeof DashboardWalletsIndexRouteImport
+      parentRoute: typeof DashboardWalletsRoute
+    }
+    '/dashboard/transactions/': {
+      id: '/dashboard/transactions/'
+      path: '/'
+      fullPath: '/dashboard/transactions/'
+      preLoaderRoute: typeof DashboardTransactionsIndexRouteImport
+      parentRoute: typeof DashboardTransactionsRoute
+    }
     '/dashboard/wallets/new': {
       id: '/dashboard/wallets/new'
       path: '/new'
@@ -271,12 +306,14 @@ declare module '@tanstack/react-router' {
 interface DashboardTransactionsRouteChildren {
   DashboardTransactionsTransactionIdRoute: typeof DashboardTransactionsTransactionIdRoute
   DashboardTransactionsNewRoute: typeof DashboardTransactionsNewRoute
+  DashboardTransactionsIndexRoute: typeof DashboardTransactionsIndexRoute
 }
 
 const DashboardTransactionsRouteChildren: DashboardTransactionsRouteChildren = {
   DashboardTransactionsTransactionIdRoute:
     DashboardTransactionsTransactionIdRoute,
   DashboardTransactionsNewRoute: DashboardTransactionsNewRoute,
+  DashboardTransactionsIndexRoute: DashboardTransactionsIndexRoute,
 }
 
 const DashboardTransactionsRouteWithChildren =
@@ -287,11 +324,13 @@ const DashboardTransactionsRouteWithChildren =
 interface DashboardWalletsRouteChildren {
   DashboardWalletsWalletIdRoute: typeof DashboardWalletsWalletIdRoute
   DashboardWalletsNewRoute: typeof DashboardWalletsNewRoute
+  DashboardWalletsIndexRoute: typeof DashboardWalletsIndexRoute
 }
 
 const DashboardWalletsRouteChildren: DashboardWalletsRouteChildren = {
   DashboardWalletsWalletIdRoute: DashboardWalletsWalletIdRoute,
   DashboardWalletsNewRoute: DashboardWalletsNewRoute,
+  DashboardWalletsIndexRoute: DashboardWalletsIndexRoute,
 }
 
 const DashboardWalletsRouteWithChildren =

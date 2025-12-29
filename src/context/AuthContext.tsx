@@ -4,6 +4,7 @@ import {
   useReducer,
   useEffect,
   useCallback,
+  useRef,
   type ReactNode,
 } from "react";
 import { authApi } from "@/api";
@@ -63,6 +64,8 @@ function reducer(state: AuthState, action: AuthAction): AuthState {
       };
     case "CLEAR_ERROR":
       return { ...state, error: null };
+    default:
+      return state;
   }
 }
 
@@ -77,9 +80,13 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const isInitialized = useRef(false);
 
   useEffect(() => {
     const init = async () => {
+      if (isInitialized.current) return;
+      isInitialized.current = true;
+
       if (!hasRefreshToken()) {
         dispatch({ type: "LOGOUT" });
         return;
@@ -101,7 +108,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = useCallback(async (data: LoginRequest) => {
-    dispatch({ type: "INIT" });
     try {
       const auth = await authApi.login(data);
       setTokens(auth.access_token, auth.refresh_token);
@@ -115,7 +121,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const register = useCallback(async (data: RegisterRequest) => {
-    dispatch({ type: "INIT" });
     try {
       const auth = await authApi.register(data);
       setTokens(auth.access_token, auth.refresh_token);

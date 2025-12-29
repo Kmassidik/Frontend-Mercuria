@@ -31,6 +31,14 @@ function createClient(baseURL: string): AxiosInstance {
     async (error) => {
       const originalRequest = error.config;
 
+      // ✅ FIX 1: Ignore 401s from Login/Register endpoints so they don't trigger a reload
+      if (
+        originalRequest.url?.includes("/login") ||
+        originalRequest.url?.includes("/register")
+      ) {
+        return Promise.reject(error);
+      }
+
       if (error.response?.status !== 401 || originalRequest._retry) {
         return Promise.reject(error);
       }
@@ -50,7 +58,10 @@ function createClient(baseURL: string): AxiosInstance {
       const refreshToken = getRefreshToken();
       if (!refreshToken) {
         clearTokens();
-        window.location.href = "/login";
+        // ✅ FIX 2: Don't reload if we are already on the login page
+        if (window.location.pathname !== "/login") {
+          window.location.href = "/login";
+        }
         return Promise.reject(error);
       }
 
@@ -67,7 +78,10 @@ function createClient(baseURL: string): AxiosInstance {
         return client(originalRequest);
       } catch {
         clearTokens();
-        window.location.href = "/login";
+        // ✅ FIX 3: Same check here
+        if (window.location.pathname !== "/login") {
+          window.location.href = "/login";
+        }
         return Promise.reject(error);
       } finally {
         isRefreshing = false;
